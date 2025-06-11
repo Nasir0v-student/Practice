@@ -10,13 +10,14 @@ app.config.from_object(Config)
 db.init_app(app)
 migrate = Migrate(app, db)
 
+  
 @app.route("/")
 def index():
     return render_template("index.html", current_page="main")
-
 @app.route("/films")
 def films():
-    return render_template("films.html", current_page="films")
+    films_list = models.Film.query.all()
+    return render_template("films.html", films=films_list, current_page="films")
 @app.route("/halls")
 def halls():
     return render_template("halls.html", current_page="halls")
