@@ -19,7 +19,9 @@ def films():
     return render_template("films.html", current_page="films")
 @app.route("/halls")
 def halls():
-    return render_template("halls.html", current_page="halls")
+    halls_list = models.Halls.query.all() 
+    return render_template("halls.html", current_page="halls", halls=halls_list)
+    
 def main():
     app.run("0.0.0.0", port=5000, debug=True)
     
