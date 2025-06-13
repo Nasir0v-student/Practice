@@ -1,23 +1,125 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Список залов</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Number</th>
-            <th>Capacity</th>
-            <th>Type</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for hall in halls %}
-        <tr>
-            <td>{{ hall.number }}</td>
-            <td>{{ hall.capacity }}</td>
-            <td>{{ hall.type }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table> 
+<h2 style="font-family: 'Poppins', sans-serif; color: #333; margin-bottom: 24px;">Список залов</h2>
+
+<!-- Форма для добавления нового зала -->
+<form method="POST" action="{{ url_for('halls') }}" style="
+  max-width: 600px;
+  margin: 0 auto 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #f9f9f9;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
+">
+    <h3 style="color: #555;">Добавить новый зал</h3>
+    <label for="number" style="font-weight: 600; color: #555;">Номер зала:</label>
+    <input 
+      type="number" 
+      id="number" 
+      name="number" 
+      required 
+      placeholder="Введите номер зала"
+      style="
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+      "
+      min="1"
+    >
+
+    <label for="capacity" style="font-weight: 600; color: #555;">Вместимость:</label>
+    <input 
+      type="number" 
+      id="capacity" 
+      name="capacity" 
+      required 
+      placeholder="Введите вместимость зала"
+      style="
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+      "
+      min="1"
+    >
+
+    <label for="type" style="font-weight: 600; color: #555;">Тип зала:</label>
+    <input 
+      type="text" 
+      id="type" 
+      name="type" 
+      required 
+      placeholder="Введите тип зала"
+      style="
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+      "
+    >
+
+    <button 
+      type="submit"
+      style="
+        background: #4A00E0;
+        color: white;
+        font-weight: 700;
+        font-size: 16px;
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      "
+      onmouseover="this.style.background='#06b6d4'"
+      onmouseout="this.style.background='#4A00E0'"
+    >Добавить зал</button>
+</form>
+
+<!-- Таблица со списком залов -->
+<div style="max-width: 800px; margin: 0 auto;">
+    <table class="table" style="width: 100%; border-collapse: collapse; margin-top: 24px;">
+        <thead>
+            <tr>
+                <th style="border: 1px solid #ccc; padding: 8px; background: #f2f2f2;">Номер</th>
+                <th style="border: 1px solid #ccc; padding: 8px; background: #f2f2f2;">Вместимость</th>
+                <th style="border: 1px solid #ccc; padding: 8px; background: #f2f2f2;">Тип</th>
+                <th style="border: 1px solid #ccc; padding: 8px; background: #f2f2f2;">Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for hall in halls %}
+            <tr>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ hall.number }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ hall.capacity }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ hall.type }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">
+                    <form method="POST" action="{{ url_for('delete_hall', hall_number=hall.number) }}" onsubmit="return confirm('Вы уверены, что хотите удалить этот зал?');" style="margin:0;">
+                        <button type="submit" style="
+                            padding: 6px 12px;
+                            background-color: #E63946;
+                            color: white;
+                            border: none;
+                            border-radius: 4px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: background 0.3s ease;
+                        "
+                        onmouseover="this.style.background='#a8323a'"
+                        onmouseout="this.style.background='#E63946'">
+                            Удалить
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
